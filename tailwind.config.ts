@@ -19,6 +19,7 @@ export default {
     },
     extend: {
       colors: {
+        border: "hsl(var(--border))",
         primary: "#4A9DFF",
         secondary: "#FFD43B",
         accent: "#FF6B6B",
