@@ -20,10 +20,11 @@ export default {
     extend: {
       colors: {
         border: "hsl(var(--border))",
+        foreground: "hsl(var(--foreground))",
+        background: "hsl(var(--background))",
         primary: "#4A9DFF",
         secondary: "#FFD43B",
         accent: "#FF6B6B",
-        background: "#FFFFFF",
         "game-blue": "#4A9DFF",
         "game-yellow": "#FFD43B",
         "game-coral": "#FF6B6B",
