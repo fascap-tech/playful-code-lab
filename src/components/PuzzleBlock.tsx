@@ -6,7 +6,7 @@ interface PuzzleBlockProps {
   children: ReactNode;
   isDragging?: boolean;
   onDragStart?: () => void;
-  onDragEnd?: () => void;
+  onDragEnd?: (event: MouseEvent | TouchEvent | PointerEvent) => void;
 }
 
 export const PuzzleBlock = ({

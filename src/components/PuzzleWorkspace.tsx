@@ -25,10 +25,52 @@ const blockTypes = [
 ];
 
 export const PuzzleWorkspace = () => {
-  const [activeBlocks, setActiveBlocks] = useState<string[]>([]);
+  const [activeBlocks, setActiveBlocks] = useState<Array<{
+    id: string;
+    type: string;
+    label: string;
+    color: string;
+    icon: JSX.Element;
+  }>>([]);
+  const [draggedBlock, setDraggedBlock] = useState<string | null>(null);
+
+  const handleDragStart = (blockId: string) => {
+    setDraggedBlock(blockId);
+  };
+
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, blockType: any) => {
+    const target = event.target as HTMLElement;
+    const workspaceRect = document.querySelector('.workspace-drop-zone')?.getBoundingClientRect();
+    
+    if (!workspaceRect) return;
+
+    // Get the final position of the dragged element
+    const x = event.clientX || (event as TouchEvent).touches?.[0]?.clientX || 0;
+    const y = event.clientY || (event as TouchEvent).touches?.[0]?.clientY || 0;
+
+    // Check if the final position is within the workspace boundaries
+    if (
+      x >= workspaceRect.left &&
+      x <= workspaceRect.right &&
+      y >= workspaceRect.top &&
+      y <= workspaceRect.bottom
+    ) {
+      // Add the block to the workspace
+      const newBlock = {
+        id: `${blockType.id}-${Date.now()}`,
+        type: blockType.id,
+        label: blockType.label,
+        color: blockType.color,
+        icon: blockType.icon,
+      };
+      setActiveBlocks((prev) => [...prev, newBlock]);
+    }
+
+    setDraggedBlock(null);
+  };
 
   const handleRunCode = () => {
-    console.log("Running code sequence:", activeBlocks);
+    console.log("Running code sequence:", activeBlocks.map(block => block.type));
   };
 
   return (
@@ -38,7 +80,13 @@ export const PuzzleWorkspace = () => {
         <div className="w-1/3 space-y-4">
           <h3 className="text-xl font-bold text-gray-800 mb-6">Blocks</h3>
           {blockTypes.map((block) => (
-            <PuzzleBlock key={block.id} color={block.color}>
+            <PuzzleBlock
+              key={block.id}
+              color={block.color}
+              isDragging={draggedBlock === block.id}
+              onDragStart={() => handleDragStart(block.id)}
+              onDragEnd={(e) => handleDragEnd(e, block)}
+            >
               <div className="flex items-center gap-2">
                 {block.icon}
                 {block.label}
@@ -62,12 +110,26 @@ export const PuzzleWorkspace = () => {
             </motion.button>
           </div>
           
-          <div className="min-h-[400px] bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-200">
+          <div className="workspace-drop-zone min-h-[400px] bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-200">
             <div className="space-y-4">
-              {/* This is where dragged blocks will be placed */}
-              <p className="text-gray-400 text-center mt-8">
-                Drag blocks here to create your program
-              </p>
+              {activeBlocks.length === 0 ? (
+                <p className="text-gray-400 text-center mt-8">
+                  Drag blocks here to create your program
+                </p>
+              ) : (
+                activeBlocks.map((block) => (
+                  <PuzzleBlock
+                    key={block.id}
+                    color={block.color}
+                    isDragging={false}
+                  >
+                    <div className="flex items-center gap-2">
+                      {block.icon}
+                      {block.label}
+                    </div>
+                  </PuzzleBlock>
+                ))
+              )}
             </div>
           </div>
         </div>
