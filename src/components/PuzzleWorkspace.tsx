@@ -39,14 +39,22 @@ export const PuzzleWorkspace = () => {
   };
 
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, blockType: any) => {
-    const target = event.target as HTMLElement;
     const workspaceRect = document.querySelector('.workspace-drop-zone')?.getBoundingClientRect();
-    
     if (!workspaceRect) return;
 
-    // Get the final position of the dragged element
-    const x = event.clientX || (event as TouchEvent).touches?.[0]?.clientX || 0;
-    const y = event.clientY || (event as TouchEvent).touches?.[0]?.clientY || 0;
+    // Get coordinates based on event type
+    let x: number, y: number;
+    
+    if (event instanceof MouseEvent || event instanceof PointerEvent) {
+      x = event.clientX;
+      y = event.clientY;
+    } else if (event instanceof TouchEvent) {
+      const touch = event.changedTouches[0];
+      x = touch.clientX;
+      y = touch.clientY;
+    } else {
+      return;
+    }
 
     // Check if the final position is within the workspace boundaries
     if (
