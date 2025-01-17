@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Star, Trophy, Puzzle } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { useToast } from "@/components/ui/use-toast";
 
 const games = [
   {
@@ -34,71 +35,82 @@ const games = [
 
 const Index = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleStartCoding = () => {
+    toast({
+      title: "Welcome to your coding journey! 🚀",
+      description: "Let's start with Puzzle Blocks - our beginner-friendly game!",
+      duration: 3000,
+    });
+    navigate("/game/1"); // Navigate to the first game
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-purple-50 to-white">
       <Navbar />
       
       {/* Main Content */}
-      <div className="pt-16"> {/* Added padding-top to account for fixed navbar */}
+      <div className="pt-16">
         {/* Hero Section */}
         <div className="container mx-auto px-4 pt-8 pb-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16 max-w-4xl mx-auto"
-        >
-          <h1 className="text-6xl font-bold bg-gradient-to-r from-game-blue via-game-purple to-game-coral bg-clip-text text-transparent mb-6">
-            Learn to Code with Fun!
-          </h1>
-          <p className="text-xl text-gray-600 mb-8">
-            Join millions of young coders on an exciting journey of creativity and problem-solving!
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-gradient-to-r from-game-blue to-blue-500 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-16 max-w-4xl mx-auto"
           >
-            Start Coding Now - It's Free!
-          </motion.button>
-        </motion.div>
+            <h1 className="text-6xl font-bold bg-gradient-to-r from-game-blue via-game-purple to-game-coral bg-clip-text text-transparent mb-6">
+              Learn to Code with Fun!
+            </h1>
+            <p className="text-xl text-gray-600 mb-8">
+              Join millions of young coders on an exciting journey of creativity and problem-solving!
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleStartCoding}
+              className="bg-gradient-to-r from-game-blue to-blue-500 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow"
+            >
+              Start Coding Now - It's Free!
+            </motion.button>
+          </motion.div>
 
           {/* Game Cards */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
-        >
-          {games.map((game, index) => (
-            <motion.div
-              key={game.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 + 0.3 }}
-              className="group"
-              onClick={() => navigate(`/game/${index + 1}`)}
-            >
-              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer transform group-hover:-translate-y-2">
-                <div className={`${game.color} p-6 flex items-center justify-center`}>
-                  {game.icon}
-                </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">{game.title}</h3>
-                  <p className="text-gray-600 mb-4">{game.description}</p>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
-                      {game.level}
-                    </span>
-                    <span className="text-gray-500">
-                      {game.lessons} Lessons
-                    </span>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
+          >
+            {games.map((game, index) => (
+              <motion.div
+                key={game.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 + 0.3 }}
+                className="group"
+                onClick={() => navigate(`/game/${index + 1}`)}
+              >
+                <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer transform group-hover:-translate-y-2">
+                  <div className={`${game.color} p-6 flex items-center justify-center`}>
+                    {game.icon}
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">{game.title}</h3>
+                    <p className="text-gray-600 mb-4">{game.description}</p>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
+                        {game.level}
+                      </span>
+                      <span className="text-gray-500">
+                        {game.lessons} Lessons
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+              </motion.div>
+            ))}
+          </motion.div>
 
           {/* Features Section */}
         <motion.div
