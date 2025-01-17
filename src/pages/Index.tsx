@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { GameCard } from "@/components/GameCard";
 import { useNavigate } from "react-router-dom";
 import { Star, Trophy, Puzzle } from "lucide-react";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
 const games = [
   {
@@ -35,8 +37,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-purple-50 to-white">
-      {/* Hero Section */}
-      <div className="container mx-auto px-4 pt-8 pb-20">
+      <Navbar />
+      
+      {/* Main Content */}
+      <div className="pt-16"> {/* Added padding-top to account for fixed navbar */}
+        {/* Hero Section */}
+        <div className="container mx-auto px-4 pt-8 pb-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -57,7 +63,7 @@ const Index = () => {
           </motion.button>
         </motion.div>
 
-        {/* Game Cards */}
+          {/* Game Cards */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -94,7 +100,7 @@ const Index = () => {
           ))}
         </motion.div>
 
-        {/* Features Section */}
+          {/* Features Section */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -134,7 +140,10 @@ const Index = () => {
             ))}
           </div>
         </motion.div>
+        </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
