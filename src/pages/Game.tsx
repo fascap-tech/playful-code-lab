@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { PuzzleWorkspace } from "@/components/PuzzleWorkspace";
+import { GameBoard } from "@/components/GameBoard";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
@@ -18,12 +19,7 @@ const Game = () => {
             <h2 className="text-xl text-gray-600 mb-4">
               Challenge: Move the character to reach the star
             </h2>
-            <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-              {/* Game visualization would go here */}
-              <div className="h-48 bg-gray-100 rounded-lg flex items-center justify-center">
-                <p className="text-gray-500">Game visualization coming soon...</p>
-              </div>
-            </div>
+            <GameBoard />
           </div>
           <PuzzleWorkspace />
         </div>
