@@ -1,6 +1,8 @@
 
 import { motion } from "framer-motion";
-import { Ship, Fish } from "lucide-react";
+import { Ship, Fish, MoveRight } from "lucide-react";
+import { Button } from "./ui/button";
+import { useState } from "react";
 
 interface Position {
   x: number;
@@ -17,7 +19,7 @@ interface SeaCreature {
 
 export const GameBoard = () => {
   const gridSize = { rows: 8, cols: 5 };
-  const characterPosition = { x: 2, y: 0, depth: 0 }; // Starting at surface
+  const [characterPosition, setCharacterPosition] = useState({ x: 2, y: 0, depth: 0 }); // Starting at surface
 
   const seaCreatures: SeaCreature[] = [
     {
@@ -34,10 +36,17 @@ export const GameBoard = () => {
     }
   ];
 
+  const moveSubmarine = () => {
+    setCharacterPosition(prev => ({
+      ...prev,
+      y: Math.min(prev.y + 1, gridSize.rows - 1),
+      depth: Math.min(prev.depth + 100, (gridSize.rows - 1) * 100)
+    }));
+  };
+
   const getDepthColor = (depth: number) => {
-    // Gradually darker blues as depth increases
     const opacity = 0.3 + (depth * 0.1);
-    return `rgba(14, 165, 233, ${opacity})`; // Using the ocean blue color
+    return `rgba(14, 165, 233, ${opacity})`;
   };
 
   const renderCell = (position: Position) => {
@@ -81,14 +90,25 @@ export const GameBoard = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-blue-400 to-blue-950 rounded-xl p-6 shadow-lg">
-      <div className="grid grid-cols-5 gap-1 rounded-lg overflow-hidden">
-        {Array.from({ length: gridSize.rows * gridSize.cols }).map((_, index) => {
-          const x = index % gridSize.cols;
-          const y = Math.floor(index / gridSize.cols);
-          return renderCell({ x, y, depth: y * 100 });
-        })}
+    <div className="space-y-4">
+      <div className="bg-gradient-to-b from-blue-400 to-blue-950 rounded-xl p-6 shadow-lg">
+        <div className="grid grid-cols-5 gap-1 rounded-lg overflow-hidden">
+          {Array.from({ length: gridSize.rows * gridSize.cols }).map((_, index) => {
+            const x = index % gridSize.cols;
+            const y = Math.floor(index / gridSize.cols);
+            return renderCell({ x, y, depth: y * 100 });
+          })}
+        </div>
+      </div>
+      <div className="flex justify-center">
+        <Button 
+          onClick={moveSubmarine}
+          className="bg-game-blue hover:bg-blue-600 text-white flex items-center gap-2"
+        >
+          Move Down <MoveRight className="rotate-90" />
+        </Button>
       </div>
     </div>
   );
 };
+
