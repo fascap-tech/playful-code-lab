@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Submarine, Fish } from "lucide-react";
+import { Ship, Fish } from "lucide-react";
 
 interface Position {
   x: number;
@@ -58,7 +58,7 @@ export const GameBoard = () => {
             animate={{ y: [-5, 5, -5] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >
-            <Submarine className="w-12 h-12" />
+            <Ship className="w-12 h-12" />
           </motion.div>
         )}
         {creature && (
